@@ -62,3 +62,19 @@ for (let value in obj) {
 
     `for...in` 迭代的是对象的 键。
     `for...of` 迭代的是对象的 数据。
+
+2. `for...of` 不能直接遍历对象
+
+    如想要遍历对象，可用如下方法。
+
+    ```JavaScript
+    let obj = {a: 1, b: 2, c: 3};
+
+    for (let key of Object.keys(obj)) {
+        console.log(obj[key]);
+    }
+
+    for (let value of Object.values(obj)) {
+        console.log(value);
+    }
+    ```
