@@ -3,31 +3,31 @@
 > **阅读指南：**  
 >
 > 1. 此文档使用变量的方式采用 unix shell 方式。例：`$(变量名称)`。
-> 2. 因为 `Dockerfile` 中的关键字均是同级，所以示例分条编写。而 `docker-compose` 的配置文件 `docker-compose.yml` 采用的是 `yaml` 格式，具有严格的格式要求，所以把所有示例均放入 [2. services 关键字](#2.-services-关键字) 内。
+> 2. 因为 `Dockerfile` 中的关键字均是同级，所以示例分条编写。而 `docker-compose` 的配置文件 `docker-compose.yml` 采用的是 `yaml` 格式，具有严格的格式要求，所以把所有示例均放入 [2. services 关键字](#2-services-关键字) 内。
 
 |目的|时间|编辑人|
 |---|---|---|
 |创建并编辑文档|2019 年 04 月 11 日|潘星宇|
 |编辑未完成的内容|2019 年 04 月 12 日|潘星宇|
 
-+ [一、Dockerfile 二三事](#一、Dockerfile-二三事)
-  + [1. FROM 关键字](#1.-FROM-关键字)
-  + [2. ADD 和 COPY 关键字](#2.-ADD-和-COPY-关键字)
-  + [3. RUN 、CMD 和 ENTRYPOINT 关键字](#3.-RUN-、CMD-和-ENTRYPOINT-关键字)
-  + [4. ENV 关键字](#4.-ENV-关键字)
-  + [5. WORKDIR 关键字](#5.-WORKDIR-关键字)
-  + [6. USER 关键字](#6.-USER-关键字)
-  + [7. EXPOSE 关键字](#7.-EXPOSE-关键字)
-+ [二、docker-compose.yml 二三事](#二、docker-compose-二三事)
-  + [1. version 关键字](#1.-version-关键字)
-  + [2. services 关键字](#2.-services-关键字)
-  + [3. image 和 build 关键字](#3.-image-和-build-关键字)
-  + [4. ports 关键字](#4.-ports-关键字)
-  + [5. env_file 和 environment 关键字](#5.-env_file-和-environment-关键字)
-  + [6. restart 关键字](#6.-restart-关键字)
-  + [7. links 和 depends_on 关键字](#7.-links-和-depends_on-关键字)
-  + [8. Swarms 集群及负载均衡](#8.-Swarms-集群及负载均衡)
-+ [三、IMAGE 镜像 和 CONTAINER 容器 的区别](#三、IMAGE-镜像-和-CONTAINER-容器-的区别)
++ [一、Dockerfile 二三事](#一Dockerfile-二三事)
+  + [1. FROM 关键字](#1-FROM-关键字)
+  + [2. ADD 和 COPY 关键字](#2-ADD-和-COPY-关键字)
+  + [3. RUN 、CMD 和 ENTRYPOINT 关键字](#3-RUN-CMD-和-ENTRYPOINT-关键字)
+  + [4. ENV 关键字](#4-ENV-关键字)
+  + [5. WORKDIR 关键字](#5-WORKDIR-关键字)
+  + [6. USER 关键字](#6-USER-关键字)
+  + [7. EXPOSE 关键字](#7-EXPOSE-关键字)
++ [二、docker-compose.yml 二三事](#二docker-compose-二三事)
+  + [1. version 关键字](#1-version-关键字)
+  + [2. services 关键字](#2-services-关键字)
+  + [3. image 和 build 关键字](#3-image-和-build-关键字)
+  + [4. ports 关键字](#4-ports-关键字)
+  + [5. env_file 和 environment 关键字](#5-env_file-和-environment-关键字)
+  + [6. restart 关键字](#6-restart-关键字)
+  + [7. links 和 depends_on 关键字](#7-links-和-depends_on-关键字)
+  + [8. Swarms 集群及负载均衡](#8-Swarms-集群及负载均衡)
++ [三、IMAGE 镜像 和 CONTAINER 容器 的区别](#三IMAGE-镜像-和-CONTAINER-容器-的区别)
 
 ------
 
@@ -175,16 +175,16 @@ services:
 
 `image` 和 `build` 关键字都是用来设置镜像的。不同点是：
 
-+ `image` 是从 `Docker Hub` 的镜像库中导入镜像，使用方法和 `Dockerfile` 的 `FROM` 关键字相同（[FROM 关键字](#1.-FROM-关键字)）。
++ `image` 是从 `Docker Hub` 的镜像库中导入镜像，使用方法和 `Dockerfile` 的 `FROM` 关键字相同（[FROM 关键字](#1-FROM-关键字)）。
 + `build` 是从本地某个文件夹内的 `Dockerfile` 创建镜像，指定的路径是包含 `Dockerfile` 的文件夹。
 
-> 示例如 [2. services 关键字](#2.-services-关键字) 内的示例所示。
+> 示例如 [2. services 关键字](#2-services-关键字) 内的示例所示。
 
 ### 4. `ports` 关键字
 
 设置容器映射到本地的端口，可以配置一个或多个端口映射，格式为 `$(本地端口):$(容器端口)` 。
 
-> 示例如 [2. services 关键字](#2.-services-关键字) 内的示例所示。
+> 示例如 [2. services 关键字](#2-services-关键字) 内的示例所示。
 
 ### 5. `env_file` 和 `environment` 关键字
 
@@ -194,13 +194,13 @@ services:
 + `environment` 是直接配置一条或多条环境变量到容器内。
 + 环境变量的命名，均采用 大写字母加下划线（_）的方式。
 
-> 示例如 [2. services 关键字](#2.-services-关键字) 内的示例所示。
+> 示例如 [2. services 关键字](#2-services-关键字) 内的示例所示。
 
 ### 6. `restart` 关键字
 
 配置容器运行中因任何问题停止后的重启方式。通常设置为 `always` —— 总是重启。
 
-> 示例如 [2. services 关键字](#2.-services-关键字) 内的示例所示。
+> 示例如 [2. services 关键字](#2-services-关键字) 内的示例所示。
 
 ### 7. `links` 和 `depends_on` 关键字
 
@@ -217,7 +217,7 @@ services:
 + `depends_on` 配置后，此容器一定在已配置的容器启动成功之后才会启动。
 + `links` 配置后，容器的启动顺序并无固定关系。
 
-> 示例如 [2. services 关键字](#2.-services-关键字) 内的示例所示。
+> 示例如 [2. services 关键字](#2-services-关键字) 内的示例所示。
 
 ### 8. `Swarms` 集群及负载均衡
 
@@ -229,7 +229,7 @@ services:
 `restart_policy` 关键字，配置此服务内的所有容器的重启策略。
 `condition` 关键字，配置此服务内的所有容器的重启条件。
 
-> 示例如 [2. services 关键字](#2.-services-关键字) 内的示例所示。
+> 示例如 [2. services 关键字](#2-services-关键字) 内的示例所示。
 
 ## 三、`IMAGE` 镜像 和 `CONTAINER` 容器 的区别
 

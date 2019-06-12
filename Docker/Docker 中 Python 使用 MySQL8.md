@@ -1,4 +1,4 @@
-# Docker 中安装 cryptography
+# Docker 中 Python 使用 MySQL8
 
 > MySQL8 版本中，密码验证方式改成了 `caching_sha2_password` 。与之相对的，程序上，想要连接 MySQL 数据库，也需要对密码做相应的处理。  
 > Python 想要连接 MySQL 就需要一个加密包 `cryptography`。

@@ -1,4 +1,4 @@
-# Docker 中使用 Postgres 数据库，并安装 psycopg2
+# Docker 中 Python 使用 Postgres
 
 > Docker 中安装依赖，总是一件很麻烦的事。  
 > 因为大多数情况，本机的环境都很健全。  
