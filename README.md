@@ -14,8 +14,13 @@
   + [百度前端规范 HTML](/Notes/百度前端规范%20HTML.md)
   + [百度前端规范 JavaScript](/Notes/百度前端规范%20JavaScript.md)
   + [百度前端规范 CSS](/Notes/百度前端规范%20CSS.md)
++ [Ubuntu](/Ubuntu)
+  + [Ubuntu 主题美化](/Ubuntu/Ubuntu%20主题美化.md)
+  + [Ubuntu 常用包管理工具国内镜像源使用](/Ubuntu/Ubuntu%20常用包管理工具国内镜像源使用(npm%E3%80%81yarn%E3%80%81pip%E3%80%81composer%E3%80%81maven%E3%80%81docker).md)
 + [Python](/Python)
   + [Flask 与 Celery 的应用工厂模式](/Python/Flask%20与%20Celery%20的应用工厂模式.md)
   + [Docker 中 Python 使用 PostgreSQL](/Python/Docker%20中%20Python%20使用%20PostgreSQL.md)
   + [Docker 中 Python 使用 MySQL8](/Python/Docker%20中%20Python%20使用%20MySQL8.md)
   + [Django 使用 MySQL 执行 python manage.py migrate 发生错误](/Python/Django%20使用%20MySQL%20执行%20python%20manage.py%20migrate%20发生错误.md)
++ [JavaScript](/JavaScript)
+  + []
