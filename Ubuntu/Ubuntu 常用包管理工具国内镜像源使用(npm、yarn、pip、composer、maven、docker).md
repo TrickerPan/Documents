@@ -56,14 +56,14 @@ $ pip config get global.index-url
 
 ## **4. composer**
 
-镜像库地址：[https://packagist.phpcomposer.com](https://packagist.phpcomposer.com)
+镜像库地址：[https://mirrors.aliyun.com/composer](https://mirrors.aliyun.com/composer)
 
 ```bash
 # 1. 在当前项目中使用
-$ composer config repo.packagist composer https://packagist.phpcomposer.com
+$ composer config repo.packagist composer https://mirrors.aliyun.com/composer
 
 # 2. 在全局中使用
-$ composer config -g repo.packagist composer https://packagist.phpcomposer.com
+$ composer config -g repo.packagist composer https://mirrors.aliyun.com/composer
 
 # 3. 查看镜像库
 $ composer config -gl
