@@ -4,7 +4,7 @@
 
 > 因为有一个文件夹，有多个镜像需要使用，所以我把这个文件夹放到与其它模块文件夹同级。
 
-当我在 `Dockerfile` 中这样写：
+当我在模块中的 `Dockerfile` 中这样写：
 
 ```Dockerfile
 COPY ../code/ /var/www/html/
