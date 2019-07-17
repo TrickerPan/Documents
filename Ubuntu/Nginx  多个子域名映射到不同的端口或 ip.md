@@ -23,4 +23,252 @@
     + 能通过子域名，明确区分服务。
     + 具有一定的美观性。
 
-## 三、方案明确 及 方案设计
+## 三、方案确定 和 方案设计
+
+**我决定采用采用 *子域名区分服务* 的方式，然后使用 nginx 做反向代理，分发到不同的端口。**
+
+### 1. 本地测试
+
+> **注意**
+>
+> 我使用的环境是 Ubuntu Desktop 桌面操作系统。
+
+1. 首先安装 nginx
+
+    ```bash
+    # 使用 Ubuntu 包管理器中的 nginx 即可。
+    $ sudo apt update
+    $ sudo apt install nginx
+    ```
+
+2. 安装 Docker 和 Docker Composer
+
+    参考官方文档 [Get Docker CE for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) 和 [Install Docker Compose](https://docs.docker.com/compose/install/)。
+
+3. 创建目录结构
+
+    ```bash
+    # 我使用的是 Jetbrains 全家桶；
+    # 这里比较麻烦。
+    $ mkdir -p DevOps
+    $ cd mkdir
+    $ mkdir -p gitlab registry teamcity mysql
+    $ mkdir -p -m 750 hub/backups hub/conf hub/data hub/logs youtrack/backups youtrack/conf youtrack/data youtrack/logs upsource/backups upsource/conf upsource/data upsource/logs
+    $ sudo chmod -R 13001:13001 hub youtrack upsource
+    $ touch docker-compose.yml
+    ```
+
+4. 编写 docker-compose.yml 配置文件
+
+    ```yaml
+    version: '3'
+
+    services:
+
+      gitlab:
+        image: gitlab/gitlab-ce:latest
+        restart: always
+        hostname: 'gitlab.tricker.org'
+        prots:
+          - 8888:80
+          - 2222:22
+        volumes:
+          - './gitlab/config:/etc/gitlab'
+          - './gitlab/data:/var/opt/gitlab'
+          - './gitlab/logs:/var/log/gitlab'
+        environment:
+          GITLAB_OMNIBUS_CONFIG: |
+            external_url "http://gitlab.tricker.org"
+            gitlab_rails["gitlab_shell_ssh_port"] = 2222
+        networks:
+          devops:
+            aliases:
+              - 'gitlab.tricker.org'
+
+      registry:
+        image: registry:latest
+        hostname: 'registry.tricker.org'
+        ports:
+          - 5555:5000
+        volumes:
+          - './registry/data:/var/lib/registry'
+        networks:
+          devops:
+            aliases:
+              - 'registry.tricker.org'
+  
+      hub:
+        image: jetbrains/hub:2019.1.11584
+        hostname: 'hub.tricker.org'
+        ports:
+          - 18080:8080
+        volumes:
+          - './hub/data:/opt/hub/data'
+          - './hub/conf:/opt/hub/conf'
+          - './hub/logs:/opt/hub/logs'
+          - './hub/backups:/opt/hub/backups'
+        networks:
+          devops:
+            aliases:
+              - 'hub.tricker.org'
+
+      youtrack:
+        image: jetbrains/youtrack:2019.2.54193
+        hostname: 'youtrack.tricker.org'
+        ports:
+          - 18081:8080
+        volumes:
+          - './youtrack/data:/opt/youtrack/data'
+          - './youtrack/conf:/opt/youtrack/conf'
+          - './youtrack/logs:/opt/youtrack/logs'
+          - './youtrack/backups:/opt/youtrack/backups'
+        networks:
+          devops:
+            aliases:
+              - 'youtrack.tricker.org'
+        depends_on:
+          - hub
+
+      upsource:
+        image: jetbrains/upsource:2019.1.1432
+        hostname: 'upsource.tricker.org'
+        ports:
+          - 18082:8080
+        volumes:
+          - './upsource/data:/opt/upsource/data'
+          - './upsource/conf:/opt/upsource/conf'
+          - './upsource/logs:/opt/upsource/logs'
+          - './upsource/backups:/opt/upsource/backups'
+        networks:
+          devops:
+            aliases:
+              - 'upsource.tricker.org'
+        depends_on:
+          - hub
+          - gitlab
+
+      teamcity:
+        image: jetbrains/teamcity-server
+        hostname: 'teamcity.tricker.org'
+        ports:
+          - 18111:8111
+        volumes:
+          - './teamcity/data:/data/teamcity_server/datadir'
+          - './teamcity/logs:/opt/teamcity/logs'
+        networks:
+          devops:
+            aliases:
+              - 'teamcity.tricker.org'
+        depends_on:
+          - mysql
+          - gitlab
+
+    networks:
+      devops:
+    ```
+
+5. 修改 hosts 文件
+
+    ```bash
+    # 注意: 这里一定要使用 root 权限。
+    $ sudo vim /etc/hosts
+    # 关于 vim 的使用，此处不再复述，有问题找百度。
+    ```
+
+    ```text
+    127.0.0.1       gitlab.tricker.org
+    127.0.0.1       registry.tricker.org
+    127.0.0.1       hub.tricker.org
+    127.0.0.1       youtrack.tricker.org
+    127.0.0.1       upsource.tricker.org
+    127.0.0.1       teamcity.tricker.org
+    ```
+
+6. 修改 nginx 配置
+
+    ```bash
+    # 进入 nginx 文件夹，这个文件夹内的操作，几乎都需要 root 权限。
+    $ cd /etc/nginx
+    $ cd sites-available/
+    $ sudo mv default default.backup
+    $ sudo vim devops
+    ```
+
+    ```nginx
+    server {
+        listen 80;
+
+        server_name gitlab.tricker.org;
+
+        location / {
+            proxy_pass       http://127.0.0.1:8888;
+            proxy_set_header Host      $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+
+    server {
+        listen 80;
+
+        server_name registry.tricker.org;
+
+        location / {
+            proxy_pass       http://127.0.0.1:5555;
+            proxy_set_header Host      $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+
+    server {
+        listen 80;
+
+        server_name hub.tricker.org;
+
+        location / {
+            proxy_pass       http://127.0.0.1:18080;
+            proxy_set_header Host      $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+
+    server {
+        listen 80;
+
+        server_name youtrack.tricker.org;
+
+        location / {
+            proxy_pass       http://127.0.0.1:18081;
+            proxy_set_header Host      $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+
+    server {
+        listen 80;
+
+        server_name upsource.tricker.org;
+
+        location / {
+            proxy_pass       http://127.0.0.1:18082;
+            proxy_set_header Host      $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+
+    server {
+        listen 80;
+
+        server_name teamcity.tricker.org;
+
+        location / {
+            proxy_pass       http://127.0.0.1:18111;
+            proxy_set_header Host      $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+    ```
+
+    ```bash
+    # 重启 nginx 打开浏览器访问相应的子域名，就可以转到相应的服务了。
+    $ sudo systemct restart nginx
+    ```
