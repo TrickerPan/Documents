@@ -8,8 +8,8 @@ If you have any further questions about advanced architecture on Laravel, or wis
 
 Finally, thank you so much for being a part of the Laravel community. You have all helped make PHP development more enjoyable and exciting for thousands of people around the world. Code happy!
 
-*Taylor Otwell*
+## *Taylor Otwell*
 
 [Translation](作者的话.md)  
-[Next](1.%20Dependency%20Injection/1.1.%20The%20Problem.md)  
+[Next: 1.1 The Problem](1%20Dependency%20Injection/1.1%20The%20Problem.md)  
 [Table of Contents](Table%20of%20Contents.md)

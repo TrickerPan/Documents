@@ -2,10 +2,10 @@
 
 * [Author’s Note](Author's%20Note.md)
 
-1. [Dependency Injection](1.%20Dependency%20Injection)
-    1. The Problem
-    2. Build A Contract
-    3. Taking It Further
+1. [Dependency Injection](1%20Dependency%20Injection)
+    1. [The Problem](1%20Dependency%20Injection/1.1%20The%20Problem.md)
+    2. [Build A Contract](1%20Dependency%20Injection/1.2%20Build%20A%20Contract.md)
+    3. [Taking It Further](1%20Dependency%20Injection/1.3%20Taking%20It%20Further.md)
     4. Too Much Java?
 2. The IoC Container
     1. Basic Binding
